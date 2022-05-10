@@ -1,3 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
 namespace conexionPostgresql
 {
     public partial class Form1 : Form
@@ -5,6 +15,12 @@ namespace conexionPostgresql
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void btnConexion_Click(object sender, EventArgs e)
+        {
+            Clases.Cconexion objetoConexion=new Clases.Cconexion();
+            objetoConexion.establecerConexion("kchy1234");
         }
     }
 }
