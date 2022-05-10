@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "UK0IX7L5japtcUDZB8NW3hE7p6ydUC2MbqN21K0ejvE4qhGLNJXr3nYMZ2QV2gmEbHTEk417Ym0V1CmNMurErQ==",
+  "success": true,
+  "projectFilePath": "E:\\classs\\C# + PostgreSQL\\conexionPostgresql\\conexionPostgresql\\conexionPostgresql.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Andrés Aymacaña\\.nuget\\packages\\npgsql\\6.0.4\\npgsql.6.0.4.nupkg.sha512",
+    "C:\\Users\\Andrés Aymacaña\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
