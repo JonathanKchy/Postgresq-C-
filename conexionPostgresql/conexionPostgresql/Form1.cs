@@ -25,6 +25,7 @@ namespace conexionPostgresql
         private string sql;
         private NpgsqlCommand cmd;
         private DataTable dt;
+        private int rowIndex = -1;
         public Form1()
         {
             InitializeComponent();
@@ -74,10 +75,125 @@ namespace conexionPostgresql
         {
             if (e.RowIndex>=0)
             {
+                rowIndex = e.RowIndex;
                 txtNombre.Text = dgvData.Rows[e.RowIndex].Cells["firstname"].Value.ToString();
                 txtNombre2.Text = dgvData.Rows[e.RowIndex].Cells["midname"].Value.ToString();
                 txtApellido.Text = dgvData.Rows[e.RowIndex].Cells["lastname"].Value.ToString();
             }
+        }
+
+        private void btnInsert_Click(object sender, EventArgs e)
+        {
+            rowIndex = -1;
+            txtNombre.Enabled=txtNombre2.Enabled=txtApellido.Enabled=true;
+            txtNombre.Text = txtNombre2.Text = txtApellido.Text = null;
+            txtNombre.Select();
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (rowIndex<0)
+            {
+                MessageBox.Show("elije algo");
+                return;
+            }
+            txtNombre.Enabled = txtNombre2.Enabled = txtApellido.Enabled = true;
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (rowIndex < 0)
+            {
+                MessageBox.Show("elije algo");
+                return;
+            }
+
+            try
+            {
+                conn.Open();
+                sql = @"select * from st_delete(:_id)";
+                cmd = new NpgsqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("_id",int.Parse(dgvData.Rows[rowIndex].Cells["id"].ToString()));
+                if ((int)cmd.ExecuteScalar()==1)
+                {
+                    MessageBox.Show("se elimino");
+                    rowIndex= -1;
+                    Select();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                MessageBox.Show("no se eliminó");
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            int result = 0;
+            if (rowIndex < 0)
+            {
+                try
+                {
+                    conn.Open();
+                    sql = @"select * from st_insert(:_firstname,:_midname,:_lastname)";
+                    cmd = new NpgsqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("_firstname", txtNombre.Text);
+                    cmd.Parameters.AddWithValue("_midname", txtNombre2.Text);
+                    cmd.Parameters.AddWithValue("_lastname", txtApellido.Text);
+                    result = (int)cmd.ExecuteScalar();
+                    conn.Close();
+                    if (result == 1)
+                    {
+                        MessageBox.Show("insertar si vale");
+                        Select();
+                    }
+                    else
+                    {
+                        MessageBox.Show("insertar no vale");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    MessageBox.Show("fallo insertar");
+                }
+            }
+            else
+            {
+                try
+                {
+                    conn.Open();
+                    sql = @"select * from st_update(:_id,:_firstname,:_midname,:_lastname)";
+                    cmd = new NpgsqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("_id", int.Parse(dgvData.Rows[rowIndex].Cells["id"].Value.ToString()));
+                    cmd.Parameters.AddWithValue("_firstname", txtNombre.Text);
+                    cmd.Parameters.AddWithValue("_midname", txtNombre2.Text);
+                    cmd.Parameters.AddWithValue("_lastname", txtApellido.Text);
+                    result = (int)cmd.ExecuteScalar();
+                    conn.Close();
+                    if (result == 1)
+                    {
+                        MessageBox.Show("update si vale");
+                        Select();
+                    }
+                    else
+                    {
+                        MessageBox.Show("update no vale");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    MessageBox.Show("fallo update");
+                }
+            }
+                result = 0;
+            txtNombre.Text = txtNombre2.Text = txtApellido.Text = null;
+            txtNombre.Enabled = txtNombre2.Enabled = txtApellido.Enabled = false;
         }
     }
 }
