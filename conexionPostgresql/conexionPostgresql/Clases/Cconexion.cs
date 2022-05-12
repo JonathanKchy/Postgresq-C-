@@ -14,20 +14,20 @@ namespace conexionPostgresql.Clases
         static string servidor="localhost";
         static string bd="Curso";
         static string usuario="postgres";
-        static string password="";
+        static string password="kchy1234";
         static string puerto="5432";
 
+        String cadenaConexion = "server=" + servidor + ";" + "port=" + puerto + ";" + "user id=" + usuario + ";" + "password=" + password + ";" + "database=" + bd + ";";
 
-        public NpgsqlConnection establecerConexion(string pass)
+        public NpgsqlConnection establecerConexion()
         {
-            password = pass;
-            String cadenaConexion = "server=" + servidor + ";" + "port=" + puerto + ";" + "user id=" + usuario + ";" + "password=" + password + ";" + "database=" + bd + ";";
+            
 
             try
             {
                 conex.ConnectionString= cadenaConexion;
                 conex.Open();
-                MessageBox.Show("Se conectoa la BD");
+                MessageBox.Show("Se conecto a la BD");
 
             }
             catch (NpgsqlException e)

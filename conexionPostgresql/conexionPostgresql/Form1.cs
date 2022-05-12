@@ -20,7 +20,12 @@ namespace conexionPostgresql
         private void btnConexion_Click(object sender, EventArgs e)
         {
             Clases.Cconexion objetoConexion=new Clases.Cconexion();
-            objetoConexion.establecerConexion("kchy1234");
+            objetoConexion.establecerConexion();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
